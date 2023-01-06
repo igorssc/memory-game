@@ -11,9 +11,9 @@ export const Records = () => {
           <table className="w-full rounded m-auto bg-zinc-500 border-collapse text-center mb-8">
             <thead>
               <tr className="h-12 bg-cyan-500 text-zinc-900">
-                <th>Nome</th>
-                <th>Pontuação</th>
-                <th>Data</th>
+                <th className="font-normal">Nome</th>
+                <th className="font-normal">Pontuação</th>
+                <th className="font-normal">Data</th>
               </tr>
             </thead>
             <tbody>

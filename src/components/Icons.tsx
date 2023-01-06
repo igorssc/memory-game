@@ -12,7 +12,7 @@ export const Icons = () => {
         <div className="flex justify-center">
           <div
             className={clsx(
-              "gap-5 justify-center md:gap-8 grid",
+              "gap-5 justify-center items-center md:gap-8 flex flex-wrap md:grid",
               level === 1 && "grid-cols-4",
               level === 2 && "grid-cols-4 md:grid-cols-6",
               level === 3 && "grid-cols-4 md:grid-cols-6 lg:grid-cols-8"

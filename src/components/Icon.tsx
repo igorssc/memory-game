@@ -33,7 +33,7 @@ export const Icon = ({
       >
         <div
           className={clsx(
-            "w-full h-full backface-hidden absolute top-0 left-0 bg-slate-600 duration-500 rounded-lg shadow-sm shadow-slate-600 transform-style-preserve3d",
+            "w-full h-full backface-hidden absolute top-0 left-0 bg-slate-600 duration-500 rounded-lg shadow-md shadow-slate-600 transform-style-preserve3d",
             (isShowAllIcons ||
               selectedIcons.includes(index) ||
               correctIcons.includes(index)) &&
@@ -43,7 +43,7 @@ export const Icon = ({
         ></div>
         <div
           className={clsx(
-            "w-full h-full backface-hidden flex items-center justify-center absolute top-0 left-0 bg-slate-400 shadow-slate-600 duration-500 rounded-lg shadow-lg transform-style-preserve3d",
+            "w-full h-full backface-hidden flex items-center justify-center absolute top-0 left-0 bg-slate-400 shadow-slate-600 duration-500 rounded-lg shadow-md transform-style-preserve3d",
             isShowAllIcons ||
               selectedIcons.includes(index) ||
               correctIcons.includes(index)
