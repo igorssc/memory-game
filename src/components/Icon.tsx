@@ -27,7 +27,7 @@ export const Icon = ({
     <>
       <span
         className={clsx(
-          "w-[4.5rem] h-[4.5rem] sm:w-28 sm:h-28 md:w-32 md:h-32 lg:w-36 lg:h-36 rounded flex items-center justify-center cursor-pointer hover:scale-110 relative perspective-10"
+          "w-16 h-16 xs:w-20 xs:h-20 sm:w-28 sm:h-28 md:w-32 md:h-32 lg:w-36 lg:h-36 rounded flex items-center justify-center cursor-pointer hover:scale-110 relative perspective-10"
         )}
         {...props}
       >
