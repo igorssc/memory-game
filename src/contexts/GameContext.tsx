@@ -247,6 +247,13 @@ export function GameProvider({ children }: GameProviderProps) {
 
   useEffect(() => {
     if (progress < 1) {
+      localStorage.setItem(
+        "p",
+        JSON.stringify({
+          l: level,
+          p: 0,
+        })
+      );
       checkRecord();
       isSound && playSoundGameOver();
     }
