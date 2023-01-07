@@ -19,10 +19,7 @@ module.exports = {
         ],
       },
 	screens: {
-      // adding xs to the rest
      	xs: "475px",
-      // if you did not add this, you would have only "xs"
-      ...defaultTheme.screens,
     },
     },
   },
