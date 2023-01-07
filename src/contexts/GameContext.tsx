@@ -9,9 +9,10 @@ import {
 } from "react";
 import useSound from "use-sound";
 import clickSound from "../assets/audios/click.mp3";
+import correctSound from "../assets/audios/correct.mp3";
 import errorSound from "../assets/audios/error.mp3";
+import gameOverSound from "../assets/audios/game-over.mp3";
 import helpSound from "../assets/audios/help.mp3";
-import correctSound from "../assets/audios/one-letter.mp3";
 import winnerSound from "../assets/audios/winner.mp3";
 import {
   CREATE_RECORD,
@@ -57,6 +58,7 @@ type GameData = {
   setIsPlaying: Dispatch<SetStateAction<boolean>>;
   isSound: boolean;
   setIsSound: Dispatch<SetStateAction<boolean>>;
+  progress: number;
 };
 
 export const GameContext = createContext({} as GameData);
@@ -68,6 +70,7 @@ export function GameProvider({ children }: GameProviderProps) {
   const [correctIcons, setCorrectIcons] = useState<number[]>([]);
   const [usedTips, setUsedTips] = useState(0);
   const [points, setPoints] = useState(0);
+  const [progress, setProgress] = useState(100);
   const [gameData, setGameData] = useState<string[]>([]);
   const [numErrors, setNumErrors] = useState(0);
   const [level, setLevel] = useState<1 | 2 | 3>(1);
@@ -86,6 +89,7 @@ export function GameProvider({ children }: GameProviderProps) {
   const [playSoundWinner] = useSound(winnerSound);
   const [playSoundCorrect] = useSound(correctSound);
   const [playSoundHelp] = useSound(helpSound);
+  const [playSoundGameOver] = useSound(gameOverSound);
 
   const [isIntentionToRestart, setIsIntentionToRestart] = useState(false);
 
@@ -161,7 +165,10 @@ export function GameProvider({ children }: GameProviderProps) {
       const temporarilySelectedIcon =
         avaiableIcons[Math.floor(Math.random() * avaiableIcons.length)];
 
-      if (!iconsSelected.includes(temporarilySelectedIcon)) {
+      if (
+        !iconsSelected.includes(temporarilySelectedIcon) ||
+        avaiableIcons.length < iconsPerLevel[level] / 2
+      ) {
         iconsSelected.push(temporarilySelectedIcon);
       }
     }
@@ -205,6 +212,7 @@ export function GameProvider({ children }: GameProviderProps) {
       } else {
         isSound && playSoundError();
         setNumErrors((prev) => prev + 1);
+        setProgress((prev) => (prev - 5 < 0 ? 0 : prev - 5));
         setTimeout(() => {
           setSelectedIcons([]);
         }, 800);
@@ -236,6 +244,13 @@ export function GameProvider({ children }: GameProviderProps) {
       );
     }
   };
+
+  useEffect(() => {
+    if (progress < 1) {
+      checkRecord();
+      isSound && playSoundGameOver();
+    }
+  }, [progress]);
 
   const checkRecord = () => {
     let isRecord = false;
@@ -281,6 +296,8 @@ export function GameProvider({ children }: GameProviderProps) {
 
     setUsedTips((prev) => prev + 1);
 
+    setProgress((prev) => (prev - 10 < 0 ? 0 : prev - 10));
+
     isSound && playSoundHelp();
   };
 
@@ -293,6 +310,7 @@ export function GameProvider({ children }: GameProviderProps) {
     selectRandomIcons();
     setIsPlaying(true);
     setIsWinner(false);
+    setProgress(100);
   };
 
   return (
@@ -325,6 +343,7 @@ export function GameProvider({ children }: GameProviderProps) {
         checkWinner,
         isSound,
         setIsSound,
+        progress,
       }}
     >
       {children}

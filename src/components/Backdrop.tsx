@@ -6,8 +6,14 @@ import { Button } from "./Button";
 import { Fireworks } from "./Fireworks";
 
 export const Backdrop = () => {
-  const { restart, isRecord, changingLevels, isIntentionToRestart, isWinner } =
-    useContext(GameContext);
+  const {
+    restart,
+    isRecord,
+    changingLevels,
+    isIntentionToRestart,
+    isWinner,
+    progress,
+  } = useContext(GameContext);
 
   useEvent(
     document.querySelector("body"),
@@ -32,6 +38,23 @@ export const Backdrop = () => {
             <Fireworks />
           </div>
         )}
+        {progress < 1 && (
+          <div className="flex flex-col place-items-center justify-center w-[calc(100%-30px)] md:w-full mx-auto">
+            <h1 className="font-low-budget text-amber-500 text-center text-6xl md:text-8xl">
+              Você perdeu
+            </h1>
+            <h2 className="text-center my-16 text-xl leading-8 whitespace-normal break-words md:text-2xl md:leading-10">
+              Você não concluiu o desafio :&#40;
+            </h2>
+            {!isRecord && (
+              <Button onClick={() => restart()} scheme="tertiary">
+                Jogar novamente
+              </Button>
+            )}
+            {isRecord && <RecordComponent />}
+            <Fireworks />
+          </div>
+        )}
         {(changingLevels || isIntentionToRestart) && isRecord && (
           <div className="flex flex-col place-items-center justify-center w-[calc(100%-30px)] md:w-full mx-auto">
             <RecordComponent />
@@ -51,6 +74,7 @@ const RecordComponent = () => {
     setLevel,
     restart,
     setPoints,
+    progress,
   } = useContext(GameContext);
 
   const [isButtonActive, setIsButtonActive] = useState(true);
@@ -92,10 +116,16 @@ const RecordComponent = () => {
 
   return (
     <>
-      <div className="w-full -mt-24 text-center block">
-        <h1 className="text-amber-500 text-2xl sm:text-3xl leading-8 whitespace-normal break-words md:text-5xl font-bold uppercase md:leading-normal">
-          Você entrou pros records
-        </h1>
+      <div className="w-full text-center block">
+        {progress < 1 ? (
+          <h1 className="text-amber-500 text-2xl sm:text-3xl leading-8 whitespace-normal break-words md:text-xl font-bold uppercase md:leading-normal">
+            ...mas entrou pros recordes
+          </h1>
+        ) : (
+          <h1 className="text-amber-500 text-2xl sm:text-3xl leading-8 whitespace-normal break-words md:text-5xl font-bold uppercase md:leading-normal">
+            Você entrou pros recordes
+          </h1>
+        )}
         <h4 className="whitespace-normal break-word text-base sm:text-xl my-16 md:text-2xl">
           Sua pontuação: {points}
         </h4>

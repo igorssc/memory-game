@@ -33,7 +33,7 @@ export const Icon = ({
       >
         <div
           className={clsx(
-            "w-full h-full backface-hidden absolute top-0 left-0 bg-slate-600 duration-500 rounded-lg shadow-md shadow-slate-600 transform-style-preserve3d",
+            "w-full h-full backface-hidden absolute top-0 left-0 bg-zinc-600 duration-500 rounded-lg shadow-md shadow-zinc-600 transform-style-preserve3d",
             (isShowAllIcons ||
               selectedIcons.includes(index) ||
               correctIcons.includes(index)) &&
