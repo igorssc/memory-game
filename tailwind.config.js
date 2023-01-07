@@ -18,9 +18,11 @@ module.exports = {
           "sans-serif",
         ],
       },
-	screens: {
-     	xs: "475px",
-    },
+      screens: {
+        xs2: "280px",
+        xs1: "340px",
+        xs: "475px",
+      },
     },
   },
   plugins: [rotateX, rotateY, backfaceVisibility, transformStyle],

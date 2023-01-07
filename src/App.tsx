@@ -21,7 +21,9 @@ export function App() {
       <Container>
         <Header />
         <Progress />
-        <Icons />
+      </Container>
+      <Icons />
+      <Container>
         <Buttons />
         <Records />
       </Container>
