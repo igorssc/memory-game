@@ -105,7 +105,6 @@ export const iconsData = {
       "./images/animals/3/31.webp",
       "./images/animals/3/32.webp",
       "./images/animals/3/33.webp",
-      "./images/animals/3/34.webp",
     ],
     [
       "./images/animals/4/1.webp",
