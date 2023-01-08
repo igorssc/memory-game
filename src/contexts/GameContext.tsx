@@ -176,7 +176,7 @@ export function GameProvider({ children }: GameProviderProps) {
     };
 
     let quantityOfIcons =
-      countWins > 4 && countWins < 9
+      countWins > 4 && countWins < 10
         ? iconsPerLevel[level] + 4
         : iconsPerLevel[level];
 
@@ -367,7 +367,7 @@ export function GameProvider({ children }: GameProviderProps) {
   };
 
   useEffect(() => {
-    selectRandomIcons();
+    !isWinner && selectRandomIcons();
   }, [countWins]);
 
   return (
