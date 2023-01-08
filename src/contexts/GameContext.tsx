@@ -180,7 +180,7 @@ export function GameProvider({ children }: GameProviderProps) {
         ? iconsPerLevel[level] + 4
         : iconsPerLevel[level];
 
-    quantityOfIcons = countWins > 9 ? quantityOfIcons + 4 : quantityOfIcons;
+    quantityOfIcons = countWins > 9 ? quantityOfIcons + 8 : quantityOfIcons;
 
     setIcons(quantityOfIcons);
 
