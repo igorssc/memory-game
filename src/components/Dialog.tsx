@@ -13,8 +13,14 @@ interface DialogPropsRestart {
 }
 
 const DialogRestart = ({ open, setOpen }: DialogPropsRestart) => {
-  const { restart, checkRecord, setIsIntentionToRestart, level } =
-    useContext(GameContext);
+  const {
+    restart,
+    checkRecord,
+    setIsIntentionToRestart,
+    level,
+    setPoints,
+    setCountWins,
+  } = useContext(GameContext);
 
   const handleClose = () => setOpen(false);
 
@@ -36,12 +42,13 @@ const DialogRestart = ({ open, setOpen }: DialogPropsRestart) => {
               const isRecord = checkRecord();
               isRecord && setIsIntentionToRestart(true);
               if (!isRecord) {
-                restart();
+                restart(true);
                 localStorage.setItem(
                   "p",
                   JSON.stringify({
                     l: level,
                     p: 0,
+                    w: 0,
                   })
                 );
               }
@@ -75,6 +82,7 @@ const DialogChangeLevel = ({
     restart,
     level,
     setPoints,
+    setCountWins,
   } = useContext(GameContext);
 
   const handleClose = () => {
@@ -100,14 +108,14 @@ const DialogChangeLevel = ({
               isRecord && setChangingLevels(toLevel);
               if (!isRecord) {
                 setLevel(toLevel);
-                setPoints(0);
-                restart();
+                restart(true);
 
                 localStorage.setItem(
                   "p",
                   JSON.stringify({
                     l: level === toLevel,
                     p: 0,
+                    w: 0,
                   })
                 );
               }

@@ -5,7 +5,7 @@ import { Button } from "./Button";
 import { Dialog } from "./Dialog";
 
 export const Buttons = () => {
-  const { help, level, points } = useContext(GameContext);
+  const { help, level, points, progress } = useContext(GameContext);
 
   const [isOpenDialogRestart, setIsOpenDialogRestart] = useState(false);
   const [isOpenDialogSkipWord, setIsOpenDialogSkipWord] = useState(false);
@@ -35,9 +35,16 @@ export const Buttons = () => {
         </Button>
         <Button
           onClick={() => {
-            help();
+            if (progress - 10 < 0) {
+              enqueueSnackbar("Você possui menos de 10 pontos.", {
+                variant: "warning",
+              });
+            } else {
+              help();
+            }
           }}
           isSmall
+          isDisabled={progress - 10 < 0}
           scheme="primary"
           className="help"
         >

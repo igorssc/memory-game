@@ -18,7 +18,10 @@ export const Header = () => {
             size={25}
             weight="bold"
             className="cursor-pointer"
-            onClick={() => setIsSound(false)}
+            onClick={() => {
+              setIsSound(false);
+              localStorage.setItem("s", String(false));
+            }}
           />
         )}
         {!isSound && (
@@ -27,7 +30,10 @@ export const Header = () => {
             size={25}
             weight="bold"
             className="cursor-pointer"
-            onClick={() => setIsSound(true)}
+            onClick={() => {
+              setIsSound(true);
+              localStorage.setItem("s", String(true));
+            }}
           />
         )}
       </div>

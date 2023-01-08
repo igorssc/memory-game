@@ -37,7 +37,7 @@ type GameData = {
   numErrors: number;
   level: 1 | 2 | 3;
   setLevel: Dispatch<SetStateAction<1 | 2 | 3>>;
-  restart: () => void;
+  restart: (isTotal?: boolean) => void;
   help: () => void;
   isRecord: boolean;
   records: undefined | getRecordsQueryResponse["records"];
@@ -59,6 +59,9 @@ type GameData = {
   isSound: boolean;
   setIsSound: Dispatch<SetStateAction<boolean>>;
   progress: number;
+  init: () => void;
+  icons: number;
+  setCountWins: Dispatch<SetStateAction<number>>;
 };
 
 export const GameContext = createContext({} as GameData);
@@ -74,7 +77,7 @@ export function GameProvider({ children }: GameProviderProps) {
   const [gameData, setGameData] = useState<string[]>([]);
   const [numErrors, setNumErrors] = useState(0);
   const [level, setLevel] = useState<1 | 2 | 3>(1);
-  const [isPlaying, setIsPlaying] = useState(true);
+  const [isPlaying, setIsPlaying] = useState(false);
   const [isWinner, setIsWinner] = useState(false);
   const [isRecord, setIsRecord] = useState(false);
   const [records, setRecords] = useState<
@@ -83,6 +86,8 @@ export function GameProvider({ children }: GameProviderProps) {
   const [changingLevels, setChangingLevels] = useState<false | 1 | 2 | 3>(
     false
   );
+  const [icons, setIcons] = useState(0);
+  const [countWins, setCountWins] = useState(0);
 
   const [playSoundError] = useSound(errorSound);
   const [playSoundClick] = useSound(clickSound);
@@ -112,14 +117,27 @@ export function GameProvider({ children }: GameProviderProps) {
       if (data) {
         const pointsSave = JSON.parse(data);
 
-        if (
-          (+pointsSave.p > 0 && +pointsSave.l === 1) ||
-          +pointsSave.l === 2 ||
-          +pointsSave.l === 3
-        ) {
-          setLevel(+pointsSave.l as 1 | 2);
-          setPoints(+pointsSave.p);
+        if (+pointsSave.p > 0 && +pointsSave.w > 0) {
+          if (
+            +pointsSave.l === 1 ||
+            +pointsSave.l === 2 ||
+            +pointsSave.l === 3
+          ) {
+            setLevel(+pointsSave.l as 1 | 2);
+            setPoints(+pointsSave.p);
+            setCountWins(+pointsSave.w);
+          }
         }
+      }
+    } catch {}
+  }, []);
+
+  useEffect(() => {
+    try {
+      const data = localStorage.getItem("s");
+
+      if (data) {
+        setIsSound(data === "false" ? false : true);
       }
     } catch {}
   }, []);
@@ -151,23 +169,32 @@ export function GameProvider({ children }: GameProviderProps) {
     const schemaSelected =
       avaiableSchemas[Math.floor(Math.random() * avaiableSchemas.length)];
 
-    const iconsPerLevel = {
+    let iconsPerLevel = {
       1: 12,
       2: 18,
       3: 24,
     };
 
+    let quantityOfIcons =
+      countWins > 4 && countWins < 9
+        ? iconsPerLevel[level] + 4
+        : iconsPerLevel[level];
+
+    quantityOfIcons = countWins > 9 ? quantityOfIcons + 4 : quantityOfIcons;
+
+    setIcons(quantityOfIcons);
+
     const avaiableIcons = iconsData[themeSelected][+schemaSelected];
 
     let iconsSelected = [] as string[];
 
-    while (iconsSelected.length < iconsPerLevel[level] / 2) {
+    while (iconsSelected.length < quantityOfIcons / 2) {
       const temporarilySelectedIcon =
         avaiableIcons[Math.floor(Math.random() * avaiableIcons.length)];
 
       if (
         !iconsSelected.includes(temporarilySelectedIcon) ||
-        avaiableIcons.length < iconsPerLevel[level] / 2
+        avaiableIcons.length < quantityOfIcons / 2
       ) {
         iconsSelected.push(temporarilySelectedIcon);
       }
@@ -184,7 +211,9 @@ export function GameProvider({ children }: GameProviderProps) {
     selectRandomIcons();
   }, []);
 
-  useEffect(() => {
+  const init = () => {
+    setIsPlaying(true);
+
     if (gameData.length > 0) {
       setTimeout(() => {
         setIsShowAllIcons(true);
@@ -192,9 +221,9 @@ export function GameProvider({ children }: GameProviderProps) {
         setTimeout(() => {
           setIsShowAllIcons(false);
         }, 5000);
-      }, 1000);
+      }, 600);
     }
-  }, [gameData]);
+  };
 
   useEffect(() => {
     if (selectedIcons.length > 1) {
@@ -208,6 +237,7 @@ export function GameProvider({ children }: GameProviderProps) {
             selectedIcons[1],
           ]);
           setSelectedIcons([]);
+          setProgress((prev) => (prev + 2 > 100 ? 100 : prev + 2));
         }, 200);
       } else {
         isSound && playSoundError();
@@ -228,7 +258,14 @@ export function GameProvider({ children }: GameProviderProps) {
 
   const checkWinner = () => {
     if (gameData.length > 0 && correctIcons.length === gameData.length) {
-      let bonusPoints = 50 - numErrors - usedTips * 5;
+      let bonusPoints = 50;
+
+      bonusPoints =
+        countWins > 4 && countWins < 9 ? bonusPoints + 20 : bonusPoints;
+
+      bonusPoints = countWins > 9 ? bonusPoints + 30 : bonusPoints;
+
+      bonusPoints = bonusPoints - numErrors * 2 - usedTips * 5;
 
       bonusPoints < 10 && (bonusPoints = 10);
 
@@ -238,9 +275,11 @@ export function GameProvider({ children }: GameProviderProps) {
 
       isSound && playSoundWinner();
 
+      setCountWins((prev) => prev + 1);
+
       localStorage.setItem(
         "p",
-        JSON.stringify({ l: level, p: points + bonusPoints })
+        JSON.stringify({ l: level, p: points + bonusPoints, w: countWins + 1 })
       );
     }
   };
@@ -252,6 +291,7 @@ export function GameProvider({ children }: GameProviderProps) {
         JSON.stringify({
           l: level,
           p: 0,
+          w: 0,
         })
       );
       checkRecord();
@@ -308,17 +348,27 @@ export function GameProvider({ children }: GameProviderProps) {
     isSound && playSoundHelp();
   };
 
-  const restart = () => {
+  const restart = (isTotal = false) => {
+    if (isTotal) {
+      setCountWins(0);
+      setPoints(0);
+    } else {
+      selectRandomIcons();
+    }
+
     setIsShowAllIcons(false);
     setCorrectIcons([]);
     setSelectedIcons([]);
     setIsIntentionToRestart(false);
     setNumErrors(0);
-    selectRandomIcons();
-    setIsPlaying(true);
+    setIsPlaying(false);
     setIsWinner(false);
     setProgress(100);
   };
+
+  useEffect(() => {
+    selectRandomIcons();
+  }, [countWins]);
 
   return (
     <GameContext.Provider
@@ -351,6 +401,9 @@ export function GameProvider({ children }: GameProviderProps) {
         isSound,
         setIsSound,
         progress,
+        init,
+        icons,
+        setCountWins,
       }}
     >
       {children}

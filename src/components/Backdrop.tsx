@@ -13,6 +13,8 @@ export const Backdrop = () => {
     isIntentionToRestart,
     isWinner,
     progress,
+    setCountWins,
+    setPoints,
   } = useContext(GameContext);
 
   useEvent(
@@ -23,7 +25,7 @@ export const Backdrop = () => {
 
   return (
     <>
-      <div className="fixed flex flex-col place-items-center justify-center top-0 left-0 z-20 w-full h-full before:content-[''] before:w-full before:h-full before:bg-black before:absolute before:opacity-90 before:-z-10">
+      <div className="fixed flex flex-col place-items-center justify-center top-0 left-0 z-50 w-full h-full before:content-[''] before:w-full before:h-full before:bg-black before:absolute before:opacity-90 before:-z-10">
         {isWinner && (
           <div className="flex flex-col place-items-center justify-center w-[calc(100%-30px)] md:w-full mx-auto">
             <h1 className="font-low-budget text-amber-500 text-center text-6xl md:text-8xl">
@@ -47,12 +49,16 @@ export const Backdrop = () => {
               Você não concluiu o desafio :&#40;
             </h2>
             {!isRecord && (
-              <Button onClick={() => restart()} scheme="tertiary">
+              <Button
+                onClick={() => {
+                  restart(true);
+                }}
+                scheme="tertiary"
+              >
                 Jogar novamente
               </Button>
             )}
             {isRecord && <RecordComponent />}
-            <Fireworks />
           </div>
         )}
         {(changingLevels || isIntentionToRestart) && isRecord && (
@@ -75,6 +81,7 @@ const RecordComponent = () => {
     restart,
     setPoints,
     progress,
+    setCountWins,
   } = useContext(GameContext);
 
   const [isButtonActive, setIsButtonActive] = useState(true);
@@ -104,10 +111,11 @@ const RecordComponent = () => {
       setChangingLevels(false);
     }
 
-    setPoints(0);
-    restart();
-    localStorage.setItem("p", JSON.stringify({ l: changingLevels, p: 0 }));
-    restart();
+    localStorage.setItem(
+      "p",
+      JSON.stringify({ l: changingLevels, p: 0, w: 0 })
+    );
+    restart(true);
 
     registerRecord(
       name.trim().charAt(0).toUpperCase() + name.trim().slice(1).toLowerCase()
