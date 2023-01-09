@@ -28,21 +28,19 @@ export const Backdrop = () => {
       <div className="fixed flex flex-col place-items-center justify-center top-0 left-0 z-50 w-full h-full before:content-[''] before:w-full before:h-full before:bg-black before:absolute before:opacity-90 before:-z-10">
         {isWinner && (
           <div className="flex flex-col place-items-center justify-center w-[calc(100%-30px)] md:w-full mx-auto">
-            <h1 className="font-low-budget text-amber-500 text-center text-6xl md:text-8xl">
+            <h1 className="font-low-budget text-cyan-500 text-center text-6xl md:text-8xl">
               Vitória
             </h1>
             <h2 className="text-center my-16 text-xl leading-8 whitespace-normal break-words md:text-2xl md:leading-10">
               Você concluiu o desafio, parabéns!
             </h2>
-            <Button onClick={() => restart()} scheme="tertiary">
-              Continuar
-            </Button>
+            <Button onClick={() => restart()}>Continuar</Button>
             <Fireworks />
           </div>
         )}
         {progress < 1 && (
           <div className="flex flex-col place-items-center justify-center w-[calc(100%-30px)] md:w-full mx-auto">
-            <h1 className="font-low-budget text-amber-500 text-center text-6xl md:text-8xl">
+            <h1 className="font-low-budget text-cyan-500 text-center text-6xl md:text-8xl">
               Você perdeu
             </h1>
             <h2 className="text-center my-16 text-xl leading-8 whitespace-normal break-words md:text-2xl md:leading-10">
@@ -53,7 +51,6 @@ export const Backdrop = () => {
                 onClick={() => {
                   restart(true);
                 }}
-                scheme="tertiary"
               >
                 Jogar novamente
               </Button>
@@ -126,11 +123,11 @@ const RecordComponent = () => {
     <>
       <div className="w-full text-center block">
         {progress < 1 ? (
-          <h1 className="text-amber-500 text-2xl sm:text-3xl leading-8 whitespace-normal break-words md:text-xl font-bold uppercase md:leading-normal">
+          <h1 className="text-cyan-500 text-2xl sm:text-3xl leading-8 whitespace-normal break-words md:text-xl font-bold uppercase md:leading-normal">
             ...mas entrou pros recordes
           </h1>
         ) : (
-          <h1 className="text-amber-500 text-2xl sm:text-3xl leading-8 whitespace-normal break-words md:text-5xl font-bold uppercase md:leading-normal">
+          <h1 className="text-cyan-500 text-2xl sm:text-3xl leading-8 whitespace-normal break-words md:text-5xl font-bold uppercase md:leading-normal">
             Você entrou pros recordes
           </h1>
         )}
@@ -145,11 +142,7 @@ const RecordComponent = () => {
           className="w-[calc(100%-10px)] md:max-w-md h-10 py-1 px-3 mb-16 border-none text-base rounded text-zinc-900"
         />
 
-        <Button
-          onClick={handleNewRecord}
-          scheme="tertiary"
-          disabled={!isButtonActive}
-        >
+        <Button onClick={handleNewRecord} disabled={!isButtonActive}>
           Continuar
         </Button>
       </div>

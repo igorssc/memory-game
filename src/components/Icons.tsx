@@ -19,7 +19,7 @@ export const Icons = () => {
         >
           {!isPlaying && (
             <>
-              <div className="w-full h-[calc(100%+6px)] -top-[3px] absolute bg-[rgba(36,36,36,0.04)] backdrop-blur-sm md:backdrop-blur-md z-10"></div>
+              <div className="w-full h-[calc(100%+6px)] -top-[3px] absolute bg-[rgba(36,36,36,0.04)] backdrop-blur-sm z-10"></div>
               <div className="w-full h-full absolute top-0 left-0 z-20 flex justify-center items-center px-5">
                 <Button
                   onClick={() => {
