@@ -200,6 +200,14 @@ export function GameProvider({ children }: GameProviderProps) {
       }
     }
 
+    iconsSelected = iconsSelected.map((value) => {
+      if (import.meta.env.PROD) {
+        return "../" + value;
+      } else {
+        return "./" + value;
+      }
+    });
+
     iconsSelected = [...iconsSelected, ...iconsSelected];
 
     iconsSelected = shuffle(iconsSelected);

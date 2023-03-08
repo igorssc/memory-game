@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { HTMLAttributes, useContext, useState } from "react";
+import { HTMLAttributes, useContext } from "react";
 import { GameContext } from "../contexts/GameContext";
 
 export interface IconProps extends HTMLAttributes<HTMLSpanElement> {
@@ -17,15 +17,11 @@ export const Icon = ({
   const { isShowAllIcons, selectedIcons, setSelectedIcons, correctIcons } =
     useContext(GameContext);
 
-  const [image, setImage] = useState<string>();
-
   const handleOpenCard = () => {
     if (selectedIcons.length < 2) {
       setSelectedIcons((prev) => [...prev, index]);
     }
   };
-
-  import(icon).then((img) => setImage(img.default));
 
   return (
     <>
@@ -56,7 +52,7 @@ export const Icon = ({
             correctIcons.includes(index) && "!bg-green-300"
           )}
         >
-          <img src={image || ""} alt="" />
+          <img src={icon} alt="" />
         </div>
       </span>
     </>
