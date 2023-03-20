@@ -1,4 +1,4 @@
-![Featured](https://user-images.githubusercontent.com/26682297/226461992-5652b314-d981-4ca3-b5f1-9038a91edf27.jpg)
+![Featured](https://user-images.githubusercontent.com/26682297/226466886-489a704b-5fda-4347-8016-12cada1af8eb.jpg)
 
 Project developed in order to improve software development skills. The project is based on the memory game, known worldwide.
 
