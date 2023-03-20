@@ -1,6 +1,6 @@
-![Featured](https://user-images.githubusercontent.com/26682297/211031855-f2a1ba1d-47c1-4083-8dd3-6355d5c59b62.jpg)
+![Featured](https://user-images.githubusercontent.com/26682297/226461992-5652b314-d981-4ca3-b5f1-9038a91edf27.jpg)
 
-Project developed in order to improve software development skills. The project is based on the hangman game, known worldwide.
+Project developed in order to improve software development skills. The project is based on the memory game, known worldwide.
 
 - [Technologies](#technologies)
 - [How to run](#how-to-run)
